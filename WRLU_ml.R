@@ -4,8 +4,8 @@ library(tidyr)
 library(ggplot2)
 
 #Path to full training set and path to a subset
-train_image_files_path <- "C:/Users/Temo/Desktop/onee/"
-valid_image_files_path <- "C:/Users/Temo/Desktop/onee_l/"
+train_image_files_path <- "Path to training data"
+valid_image_files_path <- "Path to Validation"
 
 
 #Only two categories here, a polygon only has one field, or a polygon has two or more fields
@@ -89,17 +89,17 @@ hist <- model %>% fit_generator(
   verbose = 2,
   callbacks = list(
     # save best model after every epoch
-    callback_model_checkpoint("C:/Users/Temo/Documents/Work/WRLU102220_1.h5", save_best_only = TRUE),
+    callback_model_checkpoint("Path to save model", save_best_only = TRUE),
     # only needed for visualising with TensorBoard
-    callback_tensorboard(log_dir = "C:/Users/Temo/Documents/Work/logs")
+    callback_tensorboard(log_dir = "Path to logs")
   )
 )
 plot(hist)
 ###########################
 #Load in wanted model to apply to full dataset
-model<-load_model_hdf5("C:/Users/Temo/Documents/Work/WRLU102220_1.h5")#WRLU102020_1.h5-good
+model<-load_model_hdf5("Path to saved model")#WRLU102020_1.h5-good
 #This includes all of the extracted imagry from each polygon within our dataset, different than the training
-valid_image_files_path <- "C:/Users/Temo/Documents/Work/lu_pics/"
+valid_image_files_path <- "Path to full dataset"
 #blank out data generator
 ig<-image_data_generator()
 #We are applying the model to each individual picture, make abtch size 1 and turn off shiffle
@@ -128,7 +128,7 @@ colnames(p3)<-c("id","ML")
 require(sf)
 require(raster)
 #read in polygons
-lu<-st_read("C:/Users/Temo/Documents/Work/ML5.shp")
+lu<-st_read("Path to polygons")
 #making a column to join by file name
 lu$rn1<-paste("WRLU",lu$id,sep="")
 rn1<-sub(".*U","",fn)
@@ -139,7 +139,7 @@ rn1$match<-p4$V2
 #merge model prediction output to sahpefile
 lu<-merge(lu,rn1,by="rn1")
 #save shapefile
-st_write(lu,"C:/Users/Temo/Documents/Work/ML6.shp")
+st_write(lu,"Path to save joined polygons")
 ####
 
 
